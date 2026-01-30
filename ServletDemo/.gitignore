@@ -1,0 +1,55 @@
+# ===========================
+# Eclipse / IDE Files
+# ===========================
+.classpath
+.project
+.settings/
+.metadata/
+
+# ===========================
+# Java Compiled Files
+# ===========================
+*.class
+bin/
+build/
+
+# ===========================
+# Maven (if used)
+# ===========================
+target/
+*.log
+
+# ===========================
+# Tomcat / Server Runtime Files
+# ===========================
+Servers/
+tmp/
+work/
+
+# ===========================
+# Web App Generated Files
+# ===========================
+WebContent/WEB-INF/classes/
+WebContent/WEB-INF/lib/
+
+# ===========================
+# OS Specific Files
+# ===========================
+.DS_Store
+Thumbs.db
+
+# ===========================
+# IntelliJ (if opened there)
+# ===========================
+.idea/
+*.iml
+
+# ===========================
+# VS Code (if used)
+# ===========================
+.vscode/
+
+# ===========================
+# Optional: Ignore WAR files
+# ===========================
+*.war
