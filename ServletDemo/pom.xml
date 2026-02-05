@@ -11,6 +11,14 @@
     <version>5.0.0</version>
     <scope>provided</scope>
   </dependency>
+<!-- Source: https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version>
+    <scope>compile</scope>
+</dependency>
+
 </dependencies>
   <build>
     <plugins>
