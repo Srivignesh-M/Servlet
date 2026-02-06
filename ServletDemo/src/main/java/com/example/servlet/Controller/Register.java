@@ -23,9 +23,10 @@ public class Register extends HttpServlet  {
 	        try {
 				user.registerUser(username, email, pass);
 				response.getWriter().println("{\"status\":\"success\""
-						+ "{\"message\":\"user registered\"}");
+						+ ",\"message\":\"user registered Please Login\"}");
 			} catch (Exception e) {
 				e.printStackTrace();
+				response.setStatus(404);
 				response.getWriter().println("{\"status\":\"failed\""
 						+ ",\"message\":\"user not registered\"}");
 			}

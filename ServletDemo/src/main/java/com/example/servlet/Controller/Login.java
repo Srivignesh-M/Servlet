@@ -4,10 +4,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 import com.example.servlet.DAO.UserDAO;
 import com.example.servlet.Models.User;
+import com.example.servlet.util.PasswordUtil;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
@@ -19,18 +22,21 @@ public class Login extends HttpServlet {
 		
         response.setContentType("application/json");
         UserDAO userDAO=new UserDAO();
-        User user=new User();
-        try {
-			user=userDAO.login(username,pass);
-			if(user.getUsername().equalsIgnoreCase(username))
-			response.getWriter().println("{\"status\":\"success\""
-					+ "{\"message\":\"user Login Successfull\"}");
-			
-		} catch (Exception e) {
+        User user=userDAO.login(username,pass);
+        HttpSession session =request.getSession(true);
+       if(user!=null) {
+    	   session.setAttribute("id",user.getId());
+//    	   session.setAttribute("username",user.getUsername());
+//    	   session.setAttribute("email",user.getEmail());
+    	   session.setMaxInactiveInterval(5*60);
+    	   response.setStatus(HttpServletResponse.SC_OK);
+    	   response.getWriter().println("{\"status\":\"success\""
+					+ ",\"message\":\"user Login Successfull\"}");
+       }			
+       else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			response.getWriter().println("{\"status\":\"failed\""
-					+ ",\"message\":\"no user found\"}");
-		}
-        
-        
+					+ ",\"message\":\"no user found\"}");  
+       }
     }
 }
