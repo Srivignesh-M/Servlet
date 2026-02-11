@@ -2,6 +2,7 @@ package com.example.servlet.Controller;
 
 import java.io.IOException;
 
+import com.example.servlet.DAO.TransactionDAO;
 import com.example.servlet.DAO.UserDAO;
 
 import jakarta.servlet.ServletException;
@@ -11,29 +12,33 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/account/credit")
-public class Credit extends  HttpServlet{
-public void doPost (HttpServletRequest request,HttpServletResponse response)throws IOException,ServletException{
-	HttpSession session =request.getSession(false);
-	response.setContentType("application/json");
-	int id=Integer.parseInt(request.getParameter("id"));
-	double amount=Double.parseDouble(request.getParameter("amount"));
-	
-	if(session!=null&&session.getAttribute("id")!=null) {
-		UserDAO userDAO=new UserDAO();
-		userDAO.credit(id,amount);
-		
-		response.getWriter().println("{\"status\":\"success\""
-				+",\"amount\":\""+amount+"\"}");
+@WebServlet("/user/credit")
+public class Credit extends HttpServlet {
+	private UserDAO userDAO;
+	private TransactionDAO transactionDAO;
+	public Credit() {
+        this.userDAO = new UserDAO();
+        this.transactionDAO=new TransactionDAO();
+    }
+    public Credit(UserDAO userDAO,TransactionDAO transactionDAO) {
+        this.userDAO = userDAO;
+        this.transactionDAO=transactionDAO;
+    }
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		HttpSession session = request.getSession(false);
+		int from_id=(int)(session.getAttribute("id"));
+		response.setContentType("application/json");
+		int to_id = Integer.parseInt(request.getParameter("id"));
+		double amount = Double.parseDouble(request.getParameter("amount"));
+		if(amount<1) {
+			response.setStatus(400);
+			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cannot credit less than 1 rs\"}");
+			return;
+		}
+		transactionDAO.createTransaction(from_id,to_id,amount,"credit");
+		userDAO.credit(to_id, amount);
+		userDAO.debit(from_id, amount);
+		response.setStatus(200);
+		response.getWriter().println("{\"status\":\"success\"" + ",\"amount\":\"" + amount + " credited\"}");
 	}
-	else {
-		 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("""
-                {
-                  "error": "Please login"
-                }
-            """);
-	}
-	
-}
 }

@@ -8,23 +8,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import com.example.servlet.DAO.UserDAO;
+import java.util.List;
 
-@WebServlet("/user/balance")
-public class Balance extends HttpServlet {
+import com.example.servlet.DAO.AdminDAO;
+import com.example.servlet.DAO.UserDAO;
+import com.example.servlet.Models.User;
+import com.google.gson.Gson;
+
+@WebServlet("/admin/users")
+public class Users extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
 		response.setContentType("application/json");
-		if (session == null || session.getAttribute("id") == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-		int id = (int) session.getAttribute("id");
-		UserDAO userDAO = new UserDAO();
-		double balance = userDAO.balanceCheck(id);
+		List<User> users= AdminDAO.getUsers();
+		Gson gson = new Gson();
 		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter().println("{\"status\":\"success\"" + ",\"balance\":\"" + balance + "\"}");
+		response.getWriter().println(gson.toJson(users).toString());
+		
+		
 	}
 }

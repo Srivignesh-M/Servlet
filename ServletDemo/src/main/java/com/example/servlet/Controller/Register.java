@@ -9,29 +9,26 @@ import com.example.servlet.DAO.UserDAO;
 @WebServlet("/register")
 public class Register extends HttpServlet  {
 
-	private static final long serialVersionUID = 1L;
-
 		protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
 	    	
 			String username=request.getParameter("username");
-			String email=request.getParameter("email");
+			String email = request.getParameter("email");
 			String pass=request.getParameter("pass");
+			String role=request.getParameter("role");
 			
 	        response.setContentType("application/json");
 	        UserDAO user=new UserDAO();
 	        try {
-				user.registerUser(username, email, pass);
+				user.registerUser(username, email, pass,role);
 				response.getWriter().println("{\"status\":\"success\""
-						+ ",\"message\":\"user registered Please Login\"}");
+						+ ",\"message\":\"registered Please Login\"}");
 			} catch (Exception e) {
 				e.printStackTrace();
 				response.setStatus(404);
 				response.getWriter().println("{\"status\":\"failed\""
-						+ ",\"message\":\"user not registered\"}");
+						+ ",\"message\":\"Not registered\"}");
 			}
-	        
-	        
 	    }
 	}
 

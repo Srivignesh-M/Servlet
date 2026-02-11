@@ -26,8 +26,7 @@ public class Login extends HttpServlet {
         HttpSession session =request.getSession(true);
        if(user!=null) {
     	   session.setAttribute("id",user.getId());
-//    	   session.setAttribute("username",user.getUsername());
-//    	   session.setAttribute("email",user.getEmail());
+    	   session.setAttribute("role", user.getRole());
     	   session.setMaxInactiveInterval(5*60);
     	   response.setStatus(HttpServletResponse.SC_OK);
     	   response.getWriter().println("{\"status\":\"success\""
