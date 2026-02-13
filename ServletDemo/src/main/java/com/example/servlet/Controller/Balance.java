@@ -17,10 +17,6 @@ public class Balance extends HttpServlet {
 
 		HttpSession session = request.getSession(false);
 		response.setContentType("application/json");
-		if (session == null || session.getAttribute("id") == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
 		int id = (int) session.getAttribute("id");
 		UserDAO userDAO = new UserDAO();
 		double balance = userDAO.balanceCheck(id);

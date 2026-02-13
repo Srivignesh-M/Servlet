@@ -31,9 +31,9 @@ public class TransactionDAO {
 			System.err.println("General Error :"+e.getMessage());
 		}	
 	}
-	public List<Transaction> getTransactions(int id){
+	public ArrayList<Transaction> getTransactions(int id){
 		Connection con;
-		List<Transaction> transactions = new ArrayList<>();
+		ArrayList<Transaction> transactions = new ArrayList<>();
 		try {
 			con = DBConnection.getConnection();
 			String sql="select * from transactions where from_user_id="+id+";";

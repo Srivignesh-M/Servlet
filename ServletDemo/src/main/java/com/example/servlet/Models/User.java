@@ -8,7 +8,13 @@ public class User {
 	    private double balance;
 	    private String role;
 	    
-	    public String getRole() {
+	    public User() {
+	    	
+	    }
+	    public User(int i, String string, String string2, double d) {
+		    
+		}
+		public String getRole() {
 			return role;
 		}
 		public void setRole(String role) {

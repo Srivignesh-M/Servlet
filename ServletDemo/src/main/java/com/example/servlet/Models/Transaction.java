@@ -12,7 +12,13 @@ public class Transaction {
     private Time tTime;
     private String type;
     
+    public Transaction() {
+    	super();
+    }
 
+	public Transaction(int i, int j, double d, String string) {
+		super();
+	}
 
 	public String getType() {
 		return type;

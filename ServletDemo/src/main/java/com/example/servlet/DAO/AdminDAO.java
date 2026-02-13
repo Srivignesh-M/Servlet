@@ -6,17 +6,14 @@ import com.example.servlet.util.SecurityUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 public class AdminDAO{
-public static List<User> getUsers() {
+public  ArrayList<User> getUsers() {
 	
-		Connection con;
-		List<User> users = new ArrayList<>();
-		try {
-			con = DBConnection.getConnection();
-			String sql="select id,username,email,balance from users";
+		ArrayList<User> users = new ArrayList<>();
+		String sql="select id,username,email,balance from users";
+		try (Connection con= DBConnection.getConnection();
 			PreparedStatement ps=con.prepareStatement(sql);
-			ResultSet rs=ps.executeQuery();
+			ResultSet rs=ps.executeQuery();){
 			while(rs.next()) {
 				User user=new User();
 				user.setId(rs.getInt("id"));
@@ -25,9 +22,6 @@ public static List<User> getUsers() {
 				user.setBalance(rs.getDouble("balance"));
 				users.add(user);
 			}
-			
-			ps.close();	
-			con.close();
 			return users;
 		} catch (Exception e) {
 			e.printStackTrace();

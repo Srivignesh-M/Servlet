@@ -1,12 +1,9 @@
 package com.example.servlet.Controller;
-
 import java.io.IOException;
-import java.util.List;
-
+import java.util.ArrayList;
 import com.example.servlet.DAO.TransactionDAO;
 import com.example.servlet.Models.Transaction;
 import com.google.gson.Gson;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,20 +14,46 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/user/statement")
 public class Statement extends HttpServlet {
 	private TransactionDAO transactionDAO;
-	Statement(){
+	public Statement(){
 		this.transactionDAO=new TransactionDAO();
 	}
-	Statement(TransactionDAO transactionDAO){
+	public Statement(TransactionDAO transactionDAO){
 		this.transactionDAO=transactionDAO;
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session=request.getSession(false);
-		int id=(int)session.getAttribute("id");
 		response.setContentType("application/json");
-		List<Transaction> transactions= transactionDAO.getTransactions(id);
+		if (session == null || session.getAttribute("id") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println("""
+					{
+					"status":"failed",
+					"message":"please Login"
+					}
+					""");
+            return;
+        }
+		int id=(int)session.getAttribute("id");
+		ArrayList<Transaction> transactions= transactionDAO.getTransactions(id);
+		if(transactions.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.getWriter().println("""
+					{
+					"status":"success",
+					"message":"no transactions made"
+					}
+					""");
+			return;
+		}
 		Gson gson = new Gson();
 		response.setStatus(HttpServletResponse.SC_OK);
+		response.getWriter().println("""
+				{
+				"status":"success",
+				"message":"these are the transactions"
+				}
+				""");
 		response.getWriter().println(gson.toJson(transactions).toString());
 	}
 }

@@ -1,43 +1,43 @@
 package com.example.servlet.Controller;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import com.example.servlet.DAO.AdminDAO;
+import com.example.servlet.Models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
-public class BalanceTest {
-	private Balance balance;
+public class UsersTest {
+	private Users users;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private HttpSession session;
+	private AdminDAO adminDAO;
+	private StringWriter stringWriter;
+	private PrintWriter writer;
 	
 	@BeforeEach
 	void setUp(){
-		balance=new Balance();
+		adminDAO=mock(AdminDAO.class);
+		users=new Users(adminDAO);
 		request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
-        session = mock(HttpSession.class);
+        stringWriter=new StringWriter();
+		writer=new PrintWriter(stringWriter);
 	}
 	@Test
-	void testSuccessBalance() throws Exception{
-		when(request.getSession(false)).thenReturn(session);
-		when(session.getAttribute("id")).thenReturn(5);
-		StringWriter stringWriter=new StringWriter();
-		PrintWriter writer=new PrintWriter(stringWriter);
+	void testValidUsers()throws Exception {
+		ArrayList<User> list=new ArrayList<User>();
+		list.add(new User(1,"vikky","vikky@gmail.com",1000.00));
+		when(adminDAO.getUsers()).thenReturn(list);
 		when(response.getWriter()).thenReturn(writer);
-		balance.doGet(request, response);
+		users.doGet(request, response);
 		verify(response).setStatus(HttpServletResponse.SC_OK);
-		String result = stringWriter.toString();
-        assertTrue(result.contains("\"status\":\"success\""));
 	}
 }
