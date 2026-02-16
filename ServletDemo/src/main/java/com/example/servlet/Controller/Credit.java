@@ -36,8 +36,13 @@ public class Credit extends HttpServlet {
 			return;
 		}
 		transactionDAO.createTransaction(from_id,to_id,amount,"credit");
-		userDAO.credit(to_id, amount);
+		if(from_id==to_id) {
+			userDAO.credit(to_id, amount);
+		}
+		else{
+			userDAO.credit(to_id, amount);
 		userDAO.debit(from_id, amount);
+		}
 		response.setStatus(200);
 		response.getWriter().println("{\"status\":\"success\"" + ",\"amount\":\"" + amount + " credited\"}");
 	}
