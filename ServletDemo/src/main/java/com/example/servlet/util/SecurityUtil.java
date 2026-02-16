@@ -14,25 +14,14 @@ public class SecurityUtil {
     
     static {
         try (InputStream input = SecurityUtil.class.getClassLoader()
-                .getResourceAsStream("application.properties")) {
-            
-            Properties prop = new Properties();
-            if (input == null) {
-                throw new RuntimeException("application.properties not found");
-            }
-            
+                .getResourceAsStream("application.properties")) {            
+            Properties prop = new Properties();                        
             prop.load(input);
-            SECRET_KEY = prop.getProperty("SECRET_KEY");
-            
-            if (SECRET_KEY == null || SECRET_KEY.length() != 16) {
-                throw new RuntimeException("Secret key must be exactly 16 characters in application.properties");
-            }
-            
+            SECRET_KEY = prop.getProperty("SECRET_KEY");                                 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     public static String encrypt(String data) throws Exception {
         SecretKeySpec spec = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), ALGORITHM);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
