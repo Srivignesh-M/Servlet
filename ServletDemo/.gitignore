@@ -53,3 +53,4 @@ Thumbs.db
 # Optional: Ignore WAR files
 # ===========================
 *.war
+src/main/resources/application.properties
