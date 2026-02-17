@@ -6,9 +6,12 @@ import com.example.servlet.util.SecurityUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 public class AdminDAO{
-public  ArrayList<User> getUsers() {
-	
+	private static final Logger logger = LoggerFactory.getLogger(AdminDAO.class);
+	public  ArrayList<User> getUsers() {
 		ArrayList<User> users = new ArrayList<>();
 		String sql="select id,username,email,balance from users";
 		try (Connection con= DBConnection.getConnection();
@@ -24,7 +27,7 @@ public  ArrayList<User> getUsers() {
 			}
 			return users;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Users fetching failed "+e.getMessage()+" "+e);
 		}
 		return users;
 }

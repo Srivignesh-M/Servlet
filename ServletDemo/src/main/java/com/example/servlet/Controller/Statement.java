@@ -1,6 +1,10 @@
 package com.example.servlet.Controller;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.servlet.DAO.TransactionDAO;
 import com.example.servlet.Models.Transaction;
 import com.google.gson.Gson;
@@ -12,7 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/user/statement")
+
 public class Statement extends HttpServlet {
+	private static final Logger logger = LoggerFactory.getLogger(Statement.class);
 	private TransactionDAO transactionDAO;
 	public Statement(){
 		this.transactionDAO=new TransactionDAO();
@@ -23,21 +29,10 @@ public class Statement extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session=request.getSession(false);
-		response.setContentType("application/json");
-		if (session == null || session.getAttribute("id") == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().println("""
-					{
-					"status":"failed",
-					"message":"please Login"
-					}
-					""");
-            return;
-        }
 		int id=(int)session.getAttribute("id");
 		ArrayList<Transaction> transactions= transactionDAO.getTransactions(id);
-		if(transactions.isEmpty()) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		if(transactions==null || transactions.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().println("""
 					{
 					"status":"success",

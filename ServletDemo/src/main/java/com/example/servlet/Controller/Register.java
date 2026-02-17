@@ -5,9 +5,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.servlet.DAO.UserDAO;
 @WebServlet("/register")
 public class Register extends HttpServlet  {
+	    private static final Logger logger = LoggerFactory.getLogger(Register.class);
 		UserDAO userDAO;
 		public Register(){
 			this.userDAO=new UserDAO();
@@ -29,10 +34,12 @@ public class Register extends HttpServlet  {
 				response.setStatus(HttpServletResponse.SC_OK);
 				response.getWriter().println("{\"status\":\"success\""
 						+ ",\"message\":\"registered Please Login\"}");
+				logger.info(username + " Register successfully");
 			} catch (Exception e) {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				response.getWriter().println("{\"status\":\"failed\""
 						+ ",\"message\":\"Not registered\"}");
+				logger.error(username + " Registration failed");
 			}
 	    }
 	}

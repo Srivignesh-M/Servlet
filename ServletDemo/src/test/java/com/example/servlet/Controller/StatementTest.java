@@ -60,31 +60,8 @@ public class StatementTest {
 		when(response.getWriter()).thenReturn(printWriter);		
 		when(transactionDAOMock.getTransactions(anyInt())).thenReturn (new ArrayList<>());
 		statement.doGet(request,response);
-		verify(response).setStatus(404);
+		verify(response).setStatus(HttpServletResponse.SC_OK);
 		String result = stringWriter.toString();
 		assertTrue(result.contains("no transactions made"));
-	}
-	@Test
-	void testNoSession() throws Exception{
-		when(request.getSession(false)).thenReturn(null);
-		StringWriter stringWriter=new StringWriter();
-		PrintWriter printWriter=new PrintWriter(stringWriter);
-		when(response.getWriter()).thenReturn(printWriter);
-		statement.doGet(request, response);
-		verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		String result = stringWriter.toString();
-		assertTrue(result.contains("\"status\":\"failed\""));
-	}
-	@Test
-	void testNoId() throws Exception{
-		when(request.getSession(false)).thenReturn(session);
-		when(session.getAttribute("id")).thenReturn(null);
-		StringWriter stringWriter=new StringWriter();
-		PrintWriter printWriter=new PrintWriter(stringWriter);
-		when(response.getWriter()).thenReturn(printWriter);
-		statement.doGet(request, response);
-		verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		String result = stringWriter.toString();
-		assertTrue(result.contains("\"status\":\"failed\""));
 	}
 }

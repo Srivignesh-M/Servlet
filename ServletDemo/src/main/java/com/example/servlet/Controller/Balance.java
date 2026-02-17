@@ -8,10 +8,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.servlet.DAO.UserDAO;
+import com.example.servlet.util.DBConnection;
 
 @WebServlet("/user/balance")
 public class Balance extends HttpServlet {
+	private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
 	UserDAO userDAO;
 	public Balance(){
 		this.userDAO=new UserDAO();
@@ -27,5 +33,6 @@ public class Balance extends HttpServlet {
 		double balance = userDAO.balanceCheck(id);
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().println("{\"status\":\"success\"" + ",\"balance\":\"" + balance + "\"}");
+		logger.info(id+" fetched their balance");
 	}
 }

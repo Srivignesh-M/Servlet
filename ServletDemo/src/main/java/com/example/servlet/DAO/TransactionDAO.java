@@ -36,8 +36,9 @@ public class TransactionDAO {
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		try {
 			con = DBConnection.getConnection();
-			String sql="select * from transactions where from_user_id="+id+";";
+			String sql = "SELECT * FROM transactions WHERE from_user_id = ? ORDER BY t_date DESC, t_time DESC";
 			PreparedStatement ps=con.prepareStatement(sql);
+			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				Transaction transaction = new Transaction();

@@ -2,8 +2,12 @@ package com.example.servlet.Controller;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.servlet.DAO.TransactionDAO;
 import com.example.servlet.DAO.UserDAO;
+import com.example.servlet.util.DBConnection;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/user/credit")
 public class Credit extends HttpServlet {
+	private static final Logger logger = LoggerFactory.getLogger(Credit.class);
 	private UserDAO userDAO;
 	private TransactionDAO transactionDAO;
 	public Credit() {
@@ -30,20 +35,32 @@ public class Credit extends HttpServlet {
 		response.setContentType("application/json");
 		int to_id = Integer.parseInt(request.getParameter("id"));
 		double amount = Double.parseDouble(request.getParameter("amount"));
+		double balance=userDAO.balanceCheck(from_id);
 		if(amount<1) {
 			response.setStatus(400);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cannot credit less than 1 rs\"}");
+			logger.info(from_id+" try to send less than a rupee");
+			return;
+		}
+		if(amount>balance) {
+			response.setStatus(400);
+			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"invalid amount\"}");
+			logger.info(from_id + " try to credit more amount than in their account");
 			return;
 		}
 		transactionDAO.createTransaction(from_id,to_id,amount,"credit");
 		if(from_id==to_id) {
-			userDAO.credit(to_id, amount);
+			response.setStatus(400);
+			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cant send amount to yourself\"}");
+			logger.info(from_id+" try to send amount to their own account");
+			return;
 		}
 		else{
 			userDAO.credit(to_id, amount);
-		userDAO.debit(from_id, amount);
+			userDAO.debit(from_id, amount);
 		}
 		response.setStatus(200);
 		response.getWriter().println("{\"status\":\"success\"" + ",\"amount\":\"" + amount + " credited\"}");
+		logger.info(from_id+" credited "+amount+" Rs. to "+to_id);
 	}
 }

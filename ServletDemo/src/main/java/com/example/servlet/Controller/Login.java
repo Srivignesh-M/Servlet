@@ -8,12 +8,17 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.example.servlet.DAO.AdminDAO;
 import com.example.servlet.DAO.UserDAO;
 import com.example.servlet.Models.User;
 import com.example.servlet.util.PasswordUtil;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
+	private static final Logger logger = LoggerFactory.getLogger(Login.class);
 	private UserDAO userDAO;
 	public Login() {
 		userDAO=new UserDAO();
@@ -38,11 +43,13 @@ public class Login extends HttpServlet {
     	   response.setStatus(HttpServletResponse.SC_OK);
     	   response.getWriter().println("{\"status\":\"success\""
 					+ ",\"message\":\"user Login Successfull\"}");
+    	   logger.info(username + " logged in");
        }			
        else {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			response.getWriter().println("{\"status\":\"failed\""
 					+ ",\"message\":\"no user found\"}");  
+			logger.error(username + " logged in failed");
        }
     }
 }

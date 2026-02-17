@@ -2,6 +2,9 @@ package com.example.servlet.Controller;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.servlet.DAO.TransactionDAO;
 import com.example.servlet.DAO.UserDAO;
 
@@ -14,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/user/debit")
 public class Debit extends HttpServlet {
+	private static final Logger logger = LoggerFactory.getLogger(Debit.class);
 	private UserDAO userDAO;
 	private TransactionDAO transactionDAO;
 	public Debit() {
@@ -28,15 +32,25 @@ public class Debit extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		response.setContentType("application/json");
 		double amount = Double.parseDouble(request.getParameter("amount"));
+		int id = (int) session.getAttribute("id");
 		if(amount<1) {
 			response.setStatus(400);
-			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cannot credit less than 1 rs\"}");
+			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cannot debit less than 1 rs\"}");
+			logger.info(id + " try to debit less than a rupee");
 			return;
 		}
-		int id = (int) session.getAttribute("id");
+		
+			double balance=userDAO.balanceCheck(id);
+			if(amount>balance) {
+				response.setStatus(400);
+				response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"invalid amount\"}");
+				logger.info(id + " try to debit more amount than in their account");
+				return;
+			}
 			userDAO.debit(id, amount);
 			response.setStatus(200);
 			response.getWriter().println("{\"status\":\"success\"" + ",\"amount\":\"" + amount + " debited\"}");
+			logger.info(id+" debited "+amount +"rs from their account");
 			transactionDAO.createTransaction(id,id,amount,"debit");
 	}
 }
