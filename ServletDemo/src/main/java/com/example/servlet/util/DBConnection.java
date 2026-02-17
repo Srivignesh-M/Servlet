@@ -46,4 +46,11 @@ HikariConfig config = new HikariConfig();
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
+    public static void shutdown() {
+        if (dataSource != null && !dataSource.isClosed()) {
+            logger.info("Closing HikariCP DataSource...");
+            dataSource.close();
+            logger.info("HikariCP DataSource closed successfully.");
+        }
+    }
 }

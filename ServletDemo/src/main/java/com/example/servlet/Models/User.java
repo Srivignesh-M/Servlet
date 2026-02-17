@@ -12,8 +12,15 @@ public class User {
 	    	
 	    }
 	    public User(int i, String string, String string2, double d) {
-		    
+		    id=i;
+		    email=string;
+		    password=string2;
+		    balance=d;
 		}
+	    public User(int id, String role) {
+	    	this.id=id;
+	    	this.role=role;
+	    }
 		public String getRole() {
 			return role;
 		}

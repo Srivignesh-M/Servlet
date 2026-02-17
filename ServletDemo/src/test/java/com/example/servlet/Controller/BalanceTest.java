@@ -11,6 +11,8 @@ import java.io.StringWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.servlet.DAO.UserDAO;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -20,10 +22,12 @@ public class BalanceTest {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
+	private UserDAO userDAO;
 	
 	@BeforeEach
 	void setUp(){
-		balance=new Balance();
+		userDAO=mock(UserDAO.class);
+		balance=new Balance(userDAO);
 		request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);
@@ -36,6 +40,7 @@ public class BalanceTest {
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		balance.doGet(request, response);
+		verify(userDAO).balanceCheck(5);
 		verify(response).setStatus(HttpServletResponse.SC_OK);
 		String result = stringWriter.toString();
         assertTrue(result.contains("\"status\":\"success\""));

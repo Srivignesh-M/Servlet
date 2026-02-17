@@ -14,6 +14,13 @@ import com.example.servlet.util.PasswordUtil;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
+	private UserDAO userDAO;
+	public Login() {
+		userDAO=new UserDAO();
+	}
+	public Login(UserDAO userDAO) {
+		this.userDAO=userDAO;
+	}
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     	
@@ -21,7 +28,7 @@ public class Login extends HttpServlet {
 		String pass=request.getParameter("pass");
 		
         response.setContentType("application/json");
-        UserDAO userDAO=new UserDAO();
+        
         User user=userDAO.login(username,pass);
         HttpSession session =request.getSession(true);
        if(user!=null) {

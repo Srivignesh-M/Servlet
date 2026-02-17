@@ -12,6 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.example.servlet.DAO.UserDAO;
+import com.example.servlet.Models.User;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -21,9 +24,12 @@ public class LoginTest {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
+	private UserDAO userDAO;
+	private User user;
 	@BeforeEach
 	void setUp(){
-		login =new Login();
+		userDAO=mock(UserDAO.class);
+		login =new Login(userDAO);
 		request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session=mock(HttpSession.class);
@@ -37,7 +43,10 @@ public class LoginTest {
 		StringWriter stringWriter=new StringWriter();
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
+		user=new User(5,"USER");
+		when(userDAO.login("vikky","12345678")).thenReturn(user);
 		login.doPost(request, response);
+		verify(userDAO).login("vikky", "12345678");
 		verify(response).setStatus(HttpServletResponse.SC_OK);
 		String result = stringWriter.toString();
         assertTrue(result.contains("\"status\":\"success\""));
