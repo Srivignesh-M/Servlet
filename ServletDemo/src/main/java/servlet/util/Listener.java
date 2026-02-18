@@ -19,7 +19,7 @@ public class Listener implements ServletContextListener {
             Liquibase liquibase = new Liquibase("db.changelog-master.xml",
                 new ClassLoaderResourceAccessor(), new JdbcConnection(conn));
             liquibase.update("");
-            logger.info("Liquibase Success: Database schema is synced for Jakarta app!");
+            logger.info("Liquibase Executed Successfully");
         } catch (Exception e) {
             logger.error("Liquibase Error during startup: " + e.getMessage());
             e.printStackTrace();

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import servlet.DAO.UserDAO;
+import servlet.util.EmailSender;
 import servlet.util.RegexUtil;
 
 import java.io.IOException;
@@ -50,6 +51,9 @@ public class Register extends HttpServlet  {
 	        response.setContentType("application/json");
 	        try {
 				userDAO.registerUser(username, email, pass,role);
+				String subject="Welcome to Namma Bank";
+				String body="Succesfully Register to Namma Bank . Now you can avail all the services of Namma Bank";
+				EmailSender.send(email,subject,body);
 				response.setStatus(HttpServletResponse.SC_OK);
 				response.getWriter().println("{\"status\":\"success\""
 						+ ",\"message\":\"registered Please Login\"}");
