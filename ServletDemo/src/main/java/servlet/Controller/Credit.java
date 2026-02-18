@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import servlet.DAO.TransactionDAO;
 import servlet.DAO.UserDAO;
-import servlet.util.DBConnection;
+import servlet.util.RegexUtil;
 
 @WebServlet("/user/credit")
 public class Credit extends HttpServlet {
@@ -33,7 +33,14 @@ public class Credit extends HttpServlet {
 		int from_id=(int)(session.getAttribute("id"));
 		response.setContentType("application/json");
 		int to_id = Integer.parseInt(request.getParameter("id"));
-		double amount = Double.parseDouble(request.getParameter("amount"));
+		String amountString=request.getParameter("amount");
+		double amount = Double.parseDouble(amountString);
+		if(!RegexUtil.isValidAmount(amountString)) {
+			response.setStatus(400);
+			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"amount does not contain leading zerosand must contain only two decimals\"}");
+			logger.info(from_id+" try to Credit invalid amount format");
+			return;
+		}
 		double balance=userDAO.balanceCheck(from_id);
 		if(amount<1) {
 			response.setStatus(400);

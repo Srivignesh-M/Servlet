@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import servlet.DAO.UserDAO;
+import servlet.util.RegexUtil;
 
 import java.io.IOException;
 
@@ -27,6 +28,24 @@ public class Register extends HttpServlet  {
 			String email = request.getParameter("email");
 			String pass=request.getParameter("pass");
 			String role=request.getParameter("role");
+			if(!RegexUtil.isValidUsername(username)) {
+				response.setStatus(400);
+				response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"username must contains a-z or A-Z or 0-9 or _ (Minimum 5 and Maxium 15 characters is allowded)\"}");
+				logger.info("invalid username format");
+				return;
+			}
+			if(!RegexUtil.isValidEmail(email)) {
+				response.setStatus(400);
+				response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"Enter valid email\"}");
+				logger.info("invalid email format");
+				return;
+			}
+			if(!RegexUtil.isValidPassword(pass)) {
+				response.setStatus(400);
+				response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"Password must contains a small case alphabet , capital caase alphabet and a number(Minimum 8 and Maximum 20 character only allowded\"}");
+				logger.info("invalid password format");
+				return;
+			}
 			
 	        response.setContentType("application/json");
 	        try {

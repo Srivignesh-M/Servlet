@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import servlet.DAO.TransactionDAO;
 import servlet.DAO.UserDAO;
+import servlet.util.RegexUtil;
 
 @WebServlet("/user/debit")
 public class Debit extends HttpServlet {
@@ -30,8 +31,15 @@ public class Debit extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession(false);
 		response.setContentType("application/json");
-		double amount = Double.parseDouble(request.getParameter("amount"));
+		String amountString=request.getParameter("amount");
+		double amount = Double.parseDouble(amountString);
 		int id = (int) session.getAttribute("id");
+		if(!RegexUtil.isValidAmount(amountString)) {
+			response.setStatus(400);
+			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"amount does not contain leading zerosand must contain only two decimals\"}");
+			logger.info(id+" try to debit invalid amount format");
+			return;
+		}
 		if(amount<1) {
 			response.setStatus(400);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cannot debit less than 1 rs\"}");
