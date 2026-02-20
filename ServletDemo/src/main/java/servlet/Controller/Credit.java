@@ -20,13 +20,16 @@ public class Credit extends HttpServlet {
 	private static final Logger logger = LoggerFactory.getLogger(Credit.class);
 	private UserDAO userDAO;
 	private TransactionDAO transactionDAO;
+	private RegexUtil regexUtil;
 	public Credit() {
-        this.userDAO = new UserDAO();
-        this.transactionDAO=new TransactionDAO();
+        userDAO = new UserDAO();
+        transactionDAO=new TransactionDAO();
+        regexUtil=new RegexUtil();
     }
-    public Credit(UserDAO userDAO,TransactionDAO transactionDAO) {
+    public Credit(UserDAO userDAO,TransactionDAO transactionDAO,RegexUtil regexUtil) {
         this.userDAO = userDAO;
         this.transactionDAO=transactionDAO;
+        this.regexUtil=regexUtil;
     }
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession(false);
@@ -35,19 +38,13 @@ public class Credit extends HttpServlet {
 		int to_id = Integer.parseInt(request.getParameter("id"));
 		String amountString=request.getParameter("amount");
 		double amount = Double.parseDouble(amountString);
-		if(!RegexUtil.isValidAmount(amountString)) {
+		if(!regexUtil.isValidAmount(amountString)) {
 			response.setStatus(400);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"amount does not contain leading zerosand must contain only two decimals\"}");
 			logger.info(from_id+" try to Credit invalid amount format");
 			return;
 		}
 		double balance=userDAO.balanceCheck(from_id);
-		if(amount<1) {
-			response.setStatus(400);
-			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cannot credit less than 1 rs\"}");
-			logger.info(from_id+" try to send less than a rupee");
-			return;
-		}
 		if(amount>balance) {
 			response.setStatus(400);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"invalid amount\"}");

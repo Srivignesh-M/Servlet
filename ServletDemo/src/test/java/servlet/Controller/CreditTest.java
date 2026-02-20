@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import servlet.Controller.Credit;
 import servlet.DAO.TransactionDAO;
 import servlet.DAO.UserDAO;
+import servlet.util.RegexUtil;
 
 public class CreditTest {
 	private UserDAO userDAOMock;
@@ -25,12 +26,14 @@ public class CreditTest {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
+	private RegexUtil regexUtil;
 	
 	@BeforeEach
 	void setUp(){
 		userDAOMock = mock(UserDAO.class);
         transactionDAOMock = mock(TransactionDAO.class);
-		credit=new Credit(userDAOMock,transactionDAOMock);
+        regexUtil=mock(RegexUtil.class);
+		credit=new Credit(userDAOMock,transactionDAOMock,regexUtil);
 		request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);
@@ -45,6 +48,7 @@ public class CreditTest {
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		when(userDAOMock.balanceCheck(5)).thenReturn(20000.00);
+		when(regexUtil.isValidAmount("10000.00")).thenReturn(true);
 		credit.doPost(request, response);
 		verify(userDAOMock).credit(6, 10000.00);
 		verify(userDAOMock).debit(5, 10000.00);
@@ -54,11 +58,12 @@ public class CreditTest {
         assertTrue(result.contains("\"status\":\"success\""));
 	}
 	@Test
-	void testFailedForLowAmount() throws Exception{
+	void testFailedForInvalidAmount() throws Exception{
 		when(request.getSession(false)).thenReturn(session);
 		when(session.getAttribute("id")).thenReturn(5);
 		when(request.getParameter("id")).thenReturn("6");
 		when(request.getParameter("amount")).thenReturn("-10000.00");
+		when(regexUtil.isValidAmount("10000.00")).thenReturn(false);
 		StringWriter stringWriter=new StringWriter();
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
@@ -74,6 +79,7 @@ public class CreditTest {
 		when(request.getParameter("id")).thenReturn("6");
 		when(request.getParameter("amount")).thenReturn("10000.00");
 		when(userDAOMock.balanceCheck(5)).thenReturn(2000.00);
+		when(regexUtil.isValidAmount("10000.00")).thenReturn(true);
 		StringWriter stringWriter=new StringWriter();
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);

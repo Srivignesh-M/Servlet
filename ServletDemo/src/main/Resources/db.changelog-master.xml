@@ -1,54 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
-    <changeSet id="1" author="Srivignesh">
-        <preConditions onFail="MARK_RAN">
-            <not><tableExists tableName="users"/></not>
-        </preConditions>
-        <createTable tableName="users">
-            <column name="id" type="INT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="username" type="VARCHAR(50)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="email" type="VARCHAR(100)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="password" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="balance" type="DOUBLE" defaultValueNumeric="0"/>
-            <column name="role" type="VARCHAR(20)" defaultValue="USER"/>
-        </createTable>
-    </changeSet>
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+	<changeSet id="1" author="Srivignesh">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="users" />
+			</not>
+		</preConditions>
+		<createTable tableName="users">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="username" type="VARCHAR(50)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="email" type="VARCHAR(100)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="password" type="VARCHAR(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="balance" type="DOUBLE" defaultValueNumeric="0" />
+			<column name="role" type="VARCHAR(20)" defaultValue="USER" />
+		</createTable>
+	</changeSet>
 
-    <changeSet id="2" author="Srivignesh">
-        <preConditions onFail="MARK_RAN">
-            <not><tableExists tableName="transactions"/></not>
-        </preConditions>
-        <createTable tableName="transactions">
-            <column name="transaction_id" type="INT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="from_user_id" type="INT">
-                <constraints nullable="false" referencedTableName="users" referencedColumnNames="id" foreignKeyName="fk_from_user"/>
-            </column>
-            <column name="to_user_id" type="INT">
-                <constraints nullable="false" referencedTableName="users" referencedColumnNames="id" foreignKeyName="fk_to_user"/>/>
-            </column>
-            <column name="amount" type="DOUBLE">
-                <constraints nullable="false"/>
-            </column>
-            <column name="transaction_type" type="VARCHAR(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="t_date" type="DATE" defaultValueComputed="(CURRENT_DATE)"/>
-            <column name="t_time" type="TIME" defaultValueComputed="(CURRENT_TIME)"/>
-        </createTable>
-    </changeSet>
+	<changeSet id="2" author="Srivignesh">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="transactions" />
+			</not>
+		</preConditions>
+		<createTable tableName="transactions">
+			<column name="transaction_id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="from_user_id" type="INT">
+				<constraints nullable="false" referencedTableName="users"
+					referencedColumnNames="id" foreignKeyName="fk_from_user" />
+			</column>
+			<column name="to_user_id" type="INT">
+				<constraints nullable="false" referencedTableName="users"
+					referencedColumnNames="id" foreignKeyName="fk_to_user" />/> </column>
+			<column name="amount" type="DOUBLE">
+				<constraints nullable="false" />
+			</column>
+			<column name="transaction_type" type="VARCHAR(10)">
+				<constraints nullable="false" />
+			</column>
+			<column name="t_date" type="DATE"
+				defaultValueComputed="(CURRENT_DATE)" />
+			<column name="t_time" type="TIME"
+				defaultValueComputed="(CURRENT_TIME)" />
+		</createTable>
+	</changeSet>
 
 </databaseChangeLog>

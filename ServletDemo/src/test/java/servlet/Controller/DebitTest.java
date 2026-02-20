@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import servlet.Controller.Debit;
 import servlet.DAO.TransactionDAO;
 import servlet.DAO.UserDAO;
+import servlet.util.RegexUtil;
 
 public class DebitTest {
 	private UserDAO userDAOMock;
@@ -25,12 +26,14 @@ public class DebitTest {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
+	private RegexUtil regexUtil;
 	
 	@BeforeEach
 	void setUp(){
 		userDAOMock = mock(UserDAO.class);
+		regexUtil=mock(RegexUtil.class);
         transactionDAOMock = mock(TransactionDAO.class);
-		debit=new Debit(userDAOMock,transactionDAOMock);
+		debit=new Debit(userDAOMock,transactionDAOMock,regexUtil);
 		request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);
@@ -42,6 +45,7 @@ public class DebitTest {
 		when(session.getAttribute("id")).thenReturn(5);
 		StringWriter stringWriter=new StringWriter();
 		when(userDAOMock.balanceCheck(5)).thenReturn(20000.00);
+		when(regexUtil.isValidAmount("10000.00")).thenReturn(true);
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		debit.doPost(request, response);
@@ -52,10 +56,12 @@ public class DebitTest {
         assertTrue(result.contains("\"status\":\"success\""));
 	}
 	@Test
-	void testFailedForLowAmount() throws Exception{
+	void testFailedForInvalidAmount() throws Exception{
 		when(request.getSession(false)).thenReturn(session);
 		when(session.getAttribute("id")).thenReturn(5);
+		when(request.getParameter("id")).thenReturn("6");
 		when(request.getParameter("amount")).thenReturn("-10000.00");
+		when(regexUtil.isValidAmount("10000.00")).thenReturn(false);
 		StringWriter stringWriter=new StringWriter();
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);

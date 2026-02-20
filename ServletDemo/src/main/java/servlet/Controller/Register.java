@@ -16,11 +16,14 @@ import org.slf4j.LoggerFactory;
 public class Register extends HttpServlet  {
 	    private static final Logger logger = LoggerFactory.getLogger(Register.class);
 		UserDAO userDAO;
+		RegexUtil regexUtil;
 		public Register(){
-			this.userDAO=new UserDAO();
+			userDAO=new UserDAO();
+			regexUtil=new RegexUtil();
 		}
-		public Register(UserDAO userDAO){
+		public Register(UserDAO userDAO,RegexUtil regexUtil){
 			this.userDAO=userDAO;
+			this.regexUtil=regexUtil;
 		}
 		protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
@@ -29,20 +32,20 @@ public class Register extends HttpServlet  {
 			String email = request.getParameter("email");
 			String pass=request.getParameter("pass");
 			String role=request.getParameter("role");
-			if(!RegexUtil.isValidUsername(username)) {
-				response.setStatus(400);
+			if(!regexUtil.isValidUsername(username)) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"username must contains a-z or A-Z or 0-9 or _ (Minimum 5 and Maxium 15 characters is allowded)\"}");
 				logger.info("invalid username format");
 				return;
 			}
-			if(!RegexUtil.isValidEmail(email)) {
-				response.setStatus(400);
+			if(!regexUtil.isValidEmail(email)) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"Enter valid email\"}");
 				logger.info("invalid email format");
 				return;
 			}
-			if(!RegexUtil.isValidPassword(pass)) {
-				response.setStatus(400);
+			if(!regexUtil.isValidPassword(pass)) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"Password must contains a small case alphabet , capital caase alphabet and a number(Minimum 8 and Maximum 20 character only allowded\"}");
 				logger.info("invalid password format");
 				return;

@@ -12,19 +12,19 @@ public class RegexUtil {
 	    private static final Pattern passwordPattern = Pattern.compile(passwordRegex);
 	    private static final Pattern amountPattern = Pattern.compile(amountRegex);
 	    
-	    public static boolean isValidUsername(String username) {
+	    public boolean isValidUsername(String username) {
 	        return username != null && usernamePattern.matcher(username).matches();
 	    }
 	    
-	    public static boolean isValidEmail(String email) {
+	    public boolean isValidEmail(String email) {
 	        return email != null && emailPattern.matcher(email).matches();
 	    }
 	    
-	    public static boolean isValidPassword(String password) {
+	    public boolean isValidPassword(String password) {
 	        return password != null && passwordPattern.matcher(password).matches();
 	    }
 	    
-	    public static boolean isValidAmount(String amount) {
+	    public boolean isValidAmount(String amount) {
 	        return amount != null && amountPattern.matcher(amount).matches();
 	    }
 	    

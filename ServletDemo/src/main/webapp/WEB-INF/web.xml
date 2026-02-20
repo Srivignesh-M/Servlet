@@ -3,5 +3,19 @@
 	xmlns="https://jakarta.ee/xml/ns/jakartaee"
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
 	version="5.0" metadata-complete="false">
-	<display-name>BANK_APP</display-name>
+	<display-name>ServletDemo</display-name>
+	<servlet>
+    <servlet-name>OpenApiServlet</servlet-name>
+    <servlet-class>io.swagger.v3.jaxrs2.integration.OpenApiServlet</servlet-class>
+    <init-param>
+        <param-name>openApi.configuration.resourcePackages</param-name>
+        <param-value>servlet.Controller</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>OpenApiServlet</servlet-name>
+    <url-pattern>/openapi.json</url-pattern>
+</servlet-mapping>
 </web-app>
