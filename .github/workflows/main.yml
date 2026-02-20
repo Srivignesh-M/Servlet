@@ -20,6 +20,7 @@ jobs:
           cache: maven
 
       - name: Build WAR File
+        working-directory: ./ServletDemo
         run: mvn clean package 
 
       - name: Login to Docker Hub
@@ -31,6 +32,6 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./Servlet
+          context: ./ServletDemo
           push: true
           tags: srivignesh1609/bank-app:latest
