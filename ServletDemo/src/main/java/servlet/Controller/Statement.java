@@ -18,6 +18,10 @@ import servlet.Models.Transaction;
 @WebServlet("/user/statement")
 
 public class Statement extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(Statement.class);
 	private TransactionDAO transactionDAO;
 	public Statement(){
@@ -39,6 +43,7 @@ public class Statement extends HttpServlet {
 					"message":"no transactions made"
 					}
 					""");
+			logger.info(id + "viewed their Statement but no transactions made by them.");
 			return;
 		}
 		Gson gson = new Gson();
@@ -49,6 +54,7 @@ public class Statement extends HttpServlet {
 				"message":"these are the transactions"
 				}
 				""");
+		logger.info(id + "viewed their Statement.");
 		response.getWriter().println(gson.toJson(transactions).toString());
 	}
 }

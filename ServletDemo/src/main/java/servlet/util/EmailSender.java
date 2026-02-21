@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 
 public class EmailSender {
 		private static final Logger logger=LoggerFactory.getLogger(EmailSender.class);
-	    public static void send(String email, String subject, String body) {
+	    public void send(String email, String subject, String body) {
 	        String host = "smtp.gmail.com";
 	        final String username = "srivigneshm1609@gmail.com";
 	        final String password = "xpqe jokv wunt hbbc";

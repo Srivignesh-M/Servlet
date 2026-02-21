@@ -16,6 +16,7 @@ import servlet.util.RegexUtil;
 
 @WebServlet("/user/debit")
 public class Debit extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(Debit.class);
 	private UserDAO userDAO;
 	private TransactionDAO transactionDAO;
@@ -40,7 +41,7 @@ public class Debit extends HttpServlet {
 		double amount = Double.parseDouble(amountString);
 		int id = (int) session.getAttribute("id");
 		if (!regexUtil.isValidAmount(amountString)) {
-			response.setStatus(400);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\""
 					+ ",\"message\":\"amount does not contain leading zerosand must contain only two decimals\"}");
 			logger.info(id + " try to debit invalid amount format");
@@ -48,7 +49,7 @@ public class Debit extends HttpServlet {
 		}
 		double balance = userDAO.balanceCheck(id);
 		if (amount > balance) {
-			response.setStatus(400);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"invalid amount\"}");
 			logger.info(id + " try to debit more amount than in their account");
 			return;

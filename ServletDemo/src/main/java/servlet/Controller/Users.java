@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 
 @WebServlet("/admin/users")
 public class Users extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(Users.class);
 	AdminDAO adminDAO;
 	public Users() {

@@ -66,7 +66,7 @@ public class DebitTest {
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		debit.doPost(request, response);
-		verify(response).setStatus(400);
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		String result = stringWriter.toString();
 		assertTrue(result.contains("\"status\":\"failed\""));
 	}	
@@ -80,7 +80,7 @@ public class DebitTest {
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		debit.doPost(request, response);
-		verify(response).setStatus(400);
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		String result = stringWriter.toString();
 		assertTrue(result.contains("\"status\":\"failed\""));
 	}

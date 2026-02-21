@@ -48,7 +48,7 @@ HikariConfig config = new HikariConfig();
     }
     public static void shutdown() {
         if (dataSource != null && !dataSource.isClosed()) {
-            logger.info("Closing HikariCP DataSource...");
+            logger.info("Closing HikariCP");
             dataSource.close();
             logger.info("HikariCP DataSource closed successfully.");
         }

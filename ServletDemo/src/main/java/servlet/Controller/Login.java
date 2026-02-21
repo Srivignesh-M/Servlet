@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(Login.class);
 	private UserDAO userDAO;
 	public Login() {

@@ -1,7 +1,6 @@
 package servlet.Controller;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -17,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import servlet.Controller.Register;
 import servlet.DAO.UserDAO;
+import servlet.util.EmailSender;
 import servlet.util.RegexUtil;
 
 public class RegisterTest {
@@ -25,11 +25,13 @@ public class RegisterTest {
 	private HttpServletResponse response;
 	private UserDAO userDAO;
 	private RegexUtil regexUtil;
+	private EmailSender emailSender;
 	@BeforeEach
 	void setUp(){
 		userDAO=mock(UserDAO.class);
+		emailSender=mock(EmailSender.class);
 		regexUtil=mock(RegexUtil.class);
-		register =new Register(userDAO,regexUtil);
+		register =new Register(userDAO,regexUtil,emailSender);
 		request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
 	}
@@ -49,6 +51,8 @@ public class RegisterTest {
 		register.doPost(request, response);
 		verify(userDAO).registerUser("new", "new@gmail.com", "NewUser@123","USER");
 		verify(response).setStatus(HttpServletResponse.SC_OK);
+		Thread.sleep(1000);
+		verify(emailSender).send("new@gmail.com","Welcome to Namma Bank","Succesfully Register to Namma Bank . Now you can avail all the services of Namma Bank");
 		String result = stringWriter.toString();
         assertTrue(result.contains("\"status\":\"success\""));
 	}
@@ -64,7 +68,7 @@ public class RegisterTest {
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		register.doPost(request, response);
-		verify(response).setStatus(HttpServletResponse.SC_NOT_FOUND);
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		String result = stringWriter.toString();
         assertTrue(result.contains("\"status\":\"failed\""));
 	}@Test
@@ -79,7 +83,7 @@ public class RegisterTest {
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		register.doPost(request, response);
-		verify(response).setStatus(HttpServletResponse.SC_NOT_FOUND);
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		String result = stringWriter.toString();
         assertTrue(result.contains("\"status\":\"failed\""));
 	}@Test
@@ -94,7 +98,7 @@ public class RegisterTest {
 		PrintWriter writer=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		register.doPost(request, response);
-		verify(response).setStatus(HttpServletResponse.SC_NOT_FOUND);
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		String result = stringWriter.toString();
         assertTrue(result.contains("\"status\":\"failed\""));
 	}
@@ -107,7 +111,7 @@ public class RegisterTest {
 		when(request.getParameter("role")).thenReturn("USER");
 		when(regexUtil.isValidUsername("new")).thenReturn(true);
 		when(regexUtil.isValidEmail("new@gmail.com")).thenReturn(true);
-		when(regexUtil.isValidPassword("012345678")).thenReturn(true);
+		when(regexUtil.isValidPassword("0123456789")).thenReturn(true);
 		doThrow(new Exception("DB Error")).when(userDAO)
         .registerUser("new", "new@gmail.com", "0123456789","USER");
 		StringWriter stringWriter=new StringWriter();

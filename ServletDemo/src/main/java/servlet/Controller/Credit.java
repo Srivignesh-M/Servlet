@@ -17,6 +17,7 @@ import servlet.util.RegexUtil;
 
 @WebServlet("/user/credit")
 public class Credit extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(Credit.class);
 	private UserDAO userDAO;
 	private TransactionDAO transactionDAO;
@@ -39,21 +40,21 @@ public class Credit extends HttpServlet {
 		String amountString=request.getParameter("amount");
 		double amount = Double.parseDouble(amountString);
 		if(!regexUtil.isValidAmount(amountString)) {
-			response.setStatus(400);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"amount does not contain leading zerosand must contain only two decimals\"}");
 			logger.info(from_id+" try to Credit invalid amount format");
 			return;
 		}
 		double balance=userDAO.balanceCheck(from_id);
 		if(amount>balance) {
-			response.setStatus(400);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"invalid amount\"}");
 			logger.info(from_id + " try to credit more amount than in their account");
 			return;
 		}
 		transactionDAO.createTransaction(from_id,to_id,amount,"credit");
 		if(from_id==to_id) {
-			response.setStatus(400);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cant send amount to yourself\"}");
 			logger.info(from_id+" try to send amount to their own account");
 			return;

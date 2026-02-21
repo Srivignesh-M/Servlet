@@ -15,9 +15,9 @@ public class Listener implements ServletContextListener {
 	private static final Logger logger = LoggerFactory.getLogger(Listener.class);
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("starting liquidbase");
-        try (Connection conn = DBConnection.getConnection()) {
-            Liquibase liquibase = new Liquibase("db.changelog-master.xml",
-                new ClassLoaderResourceAccessor(), new JdbcConnection(conn));
+        try (Connection conn = DBConnection.getConnection();
+            Liquibase liquibase = new Liquibase("db.changelog.xml",
+                new ClassLoaderResourceAccessor(), new JdbcConnection(conn))) {
             liquibase.update("");
             logger.info("Liquibase Executed Successfully");
         } catch (Exception e) {

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 @WebServlet("/user/balance")
 public class Balance extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
 	UserDAO userDAO;
 	public Balance(){
