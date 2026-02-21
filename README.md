@@ -38,6 +38,25 @@ graph TD
     Manager<--->DB[(MySQL Database)]
 ```
 
+## Entity Relationship(One to Many)
+```mermaid
+erDiagram
+    USERS ||--o{ TRANSACTIONS : "makes"
+    USERS {
+        int id PK
+        string username
+        string email
+        double balance
+    }
+    TRANSACTIONS {
+        int transaction_id PK
+        int from_user_id FK
+        int to_user_id FK
+        double amount
+        date t_date
+    }
+```
+
 ##  API Endpoints Summary
 **Sample API Endpoint :** http://localhost:8080/ServletDemo/register.
 | S.No | Endpoint | Method | Inputs Needed | Description |
