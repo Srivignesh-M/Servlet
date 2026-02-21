@@ -21,8 +21,7 @@ public class Listener implements ServletContextListener {
             liquibase.update("");
             logger.info("Liquibase Executed Successfully");
         } catch (Exception e) {
-            logger.error("Liquibase Error during startup: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Liquibase Error during startup: " + e.getMessage()+e);
         }
     }
     public void contextDestroyed(ServletContextEvent sce) {

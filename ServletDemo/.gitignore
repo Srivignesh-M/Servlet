@@ -16,4 +16,3 @@ WebContent/WEB-INF/lib/
 Thumbs.db
 
 *.war
-src/main/resources/application.properties
