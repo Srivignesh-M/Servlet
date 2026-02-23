@@ -34,7 +34,10 @@ public class Statement extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session=request.getSession(false);
 		int id=(int)session.getAttribute("id");
-		ArrayList<Transaction> transactions= transactionDAO.getTransactions(id);
+		int page=0;
+		page=Integer.valueOf(request.getParameter("page"));
+		
+		ArrayList<Transaction> transactions= transactionDAO.getTransactions(id,page);
 		if(transactions==null || transactions.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().println("""

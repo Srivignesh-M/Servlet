@@ -39,9 +39,10 @@ public class StatementTest {
 	void validSatement()throws Exception{
 		when(request.getSession(false)).thenReturn(session);
 		when(session.getAttribute("id")).thenReturn(5);
+		when(request.getParameter("page")).thenReturn("1");
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		transactions.add(new Transaction(5,5,100.0,"debit"));
-		when(transactionDAOMock.getTransactions(5)).thenReturn(transactions);
+		when(transactionDAOMock.getTransactions(5,1)).thenReturn(transactions);
 		StringWriter stringWriter=new StringWriter();
 		PrintWriter printWriter=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(printWriter);	
@@ -58,7 +59,7 @@ public class StatementTest {
 		StringWriter stringWriter=new StringWriter();
 		PrintWriter printWriter=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(printWriter);		
-		when(transactionDAOMock.getTransactions(anyInt())).thenReturn (new ArrayList<>());
+		when(transactionDAOMock.getTransactions(anyInt(),anyInt())).thenReturn (new ArrayList<>());
 		statement.doGet(request,response);
 		verify(response).setStatus(HttpServletResponse.SC_OK);
 		String result = stringWriter.toString();

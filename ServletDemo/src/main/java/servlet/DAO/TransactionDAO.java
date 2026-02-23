@@ -31,14 +31,15 @@ public class TransactionDAO {
 			System.err.println("General Error :"+e.getMessage());
 		}	
 	}
-	public ArrayList<Transaction> getTransactions(int id){
+	public ArrayList<Transaction> getTransactions(int id,int page){
 		Connection con;
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		try {
 			con = DBConnection.getConnection();
-			String sql = "SELECT * FROM transactions WHERE from_user_id = ? ORDER BY t_date DESC, t_time DESC";
+			String sql = "SELECT * FROM transactions WHERE from_user_id = ? ORDER BY t_date DESC, t_time DESC  limit 10 offset ?";
 			PreparedStatement ps=con.prepareStatement(sql);
 			ps.setInt(1, id);
+			ps.setInt(2, page*10);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				Transaction transaction = new Transaction();
