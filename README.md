@@ -20,7 +20,7 @@ Admin can Monitor user details.
 ##  Features
 
 * **Account Management:** CRUD operations for user profiles and bank accounts.
-* **Transaction ** Processing for **Debit** and **Credit** operations.
+* **Transaction:** Processing for **Debit** and **Credit** operations.
 * **Security First:** Password Hashin using Bcrypt , Data Encryption using AES.
 * **Automated Alerts:** Integrated `EmailSender` for registration welcome message. 
 * **Database Versioning:** Version-controlled database changes using Liquibase.
