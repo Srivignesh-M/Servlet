@@ -56,6 +56,7 @@ public class StatementTest {
 	void testEmptyStatement()throws Exception{
 		when(request.getSession(false)).thenReturn(session);
 		when(session.getAttribute("id")).thenReturn(5);
+		when(request.getParameter("page")).thenReturn("1");
 		StringWriter stringWriter=new StringWriter();
 		PrintWriter printWriter=new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(printWriter);		
