@@ -36,7 +36,19 @@ public class Statement extends HttpServlet {
 		int id=(int)session.getAttribute("id");
 		String pageStr=request.getParameter("page");
 		int page=0;
-		if(pageStr!=null&&!pageStr.trim().isEmpty()) {
+		if(pageStr==null||pageStr.trim().isEmpty()) {
+			
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("""
+					{
+					"status":"success",
+					"message":"not valid page"
+					}
+					""");
+			logger.info(id + " entered a invalid page number");
+			return;
+		}
+		else {
 			page =Integer.parseInt(pageStr);
 		}
 		ArrayList<Transaction> transactions= transactionDAO.getTransactions(id,page);
