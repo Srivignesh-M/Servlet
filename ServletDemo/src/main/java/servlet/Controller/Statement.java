@@ -35,7 +35,7 @@ public class Statement extends HttpServlet {
 		HttpSession session=request.getSession(false);
 		int id=(int)session.getAttribute("id");
 		int page=0;
-		page=Integer.valueOf(request.getParameter("page"));
+		page=Integer.parseInt(request.getParameter("page"));
 		
 		ArrayList<Transaction> transactions= transactionDAO.getTransactions(id,page);
 		if(transactions==null || transactions.isEmpty()) {
