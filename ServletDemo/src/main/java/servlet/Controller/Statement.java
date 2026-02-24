@@ -36,7 +36,7 @@ public class Statement extends HttpServlet {
 		int id=(int)session.getAttribute("id");
 		String pageStr=request.getParameter("page");
 		int page=0;
-		if(pageStr==null||pageStr.trim().isEmpty()) {
+		if(pageStr==null) {
 			
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("""
