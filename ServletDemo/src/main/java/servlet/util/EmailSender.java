@@ -42,7 +42,7 @@ public class EmailSender {
 	            message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
 	            message.setSubject(subject);
 	            Context context = new Context();
-	            context.setVariable("userName", userName);
+	            context.setVariable("userName",userName);
 	            String htmlContent = templateEngine.process("email-template", context);
 	            message.setContent(htmlContent, "text/html; charset=utf-8");
 	            Transport.send(message);
