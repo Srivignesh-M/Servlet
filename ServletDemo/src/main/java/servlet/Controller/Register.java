@@ -60,7 +60,7 @@ public class Register extends HttpServlet  {
 				userDAO.registerUser(username, email, pass,role);
 				String subject="Welcome to Namma Bank";
 				String body="Succesfully Register to Namma Bank . Now you can avail all the services of Namma Bank";
-				new Thread(()->emailSender.send(email,subject,body)).start();
+				new Thread(()->emailSender.send(email,subject,username)).start();
 				response.setStatus(HttpServletResponse.SC_OK);
 				response.getWriter().println("{\"status\":\"success\""
 						+ ",\"message\":\"registered Please Login\"}");

@@ -52,7 +52,7 @@ public class RegisterTest {
 		verify(userDAO).registerUser("new", "new@gmail.com", "NewUser@123","USER");
 		verify(response).setStatus(HttpServletResponse.SC_OK);
 		Thread.sleep(1000);
-		verify(emailSender).send("new@gmail.com","Welcome to Namma Bank","Succesfully Register to Namma Bank . Now you can avail all the services of Namma Bank");
+		verify(emailSender).send("new@gmail.com","Welcome to Namma Bank","new");
 		String result = stringWriter.toString();
         assertTrue(result.contains("\"status\":\"success\""));
 	}
