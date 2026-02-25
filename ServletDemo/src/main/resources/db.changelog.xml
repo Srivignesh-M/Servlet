@@ -43,7 +43,7 @@
 			</column>
 			<column name="to_user_id" type="INT">
 				<constraints nullable="false" referencedTableName="users"
-					referencedColumnNames="id" foreignKeyName="fk_to_user" /> 
+					referencedColumnNames="id" foreignKeyName="fk_to_user" />
 			</column>
 			<column name="amount" type="DOUBLE">
 				<constraints nullable="false" />

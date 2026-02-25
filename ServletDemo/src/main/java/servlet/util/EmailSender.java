@@ -3,11 +3,25 @@ import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import java.util.Properties;
 import org.slf4j.LoggerFactory;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.slf4j.Logger;
 
 public class EmailSender {
 		private static final Logger logger=LoggerFactory.getLogger(EmailSender.class);
-	    public void send(String email, String subject, String body) {
+		private final TemplateEngine templateEngine;
+		public EmailSender() {
+	        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+	        resolver.setPrefix("/templates/");
+	        resolver.setSuffix(".html");
+	        resolver.setTemplateMode("HTML");
+	        resolver.setCharacterEncoding("UTF-8");
+
+	        this.templateEngine = new TemplateEngine();
+	        this.templateEngine.setTemplateResolver(resolver);
+	    }
+	    public void send(String email, String subject, String userName) {
 	        String host = "smtp.gmail.com";
 	        final String username = "srivigneshm1609@gmail.com";
 	        final String password = "xpqe jokv wunt hbbc";
@@ -27,7 +41,10 @@ public class EmailSender {
 	            message.setFrom(new InternetAddress(username));
 	            message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
 	            message.setSubject(subject);
-	            message.setText(body);
+	            Context context = new Context();
+	            context.setVariable("userName", userName);
+	            String htmlContent = templateEngine.process("email-template", context);
+	            message.setContent(htmlContent, "text/html; charset=utf-8");
 	            Transport.send(message);
 	            logger.info("Email sent successfully");
 	        } catch (MessagingException e) {

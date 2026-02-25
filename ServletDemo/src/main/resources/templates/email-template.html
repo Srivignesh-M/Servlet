@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; color: #333; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; border: 1px solid #eeeeee; padding: 20px; }
+        .bank-name { font-size: 22px; font-weight: bold; color: #004a99; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="bank-name">Namma Bank</div>
+        
+        <p>Hello <span th:text="${userName}">Guest</span>,</p>
+        
+        <p>Your account has been successfully created. Welcome to our bank!</p>
+        
+        <p>You can now log in to your dashboard to start using our services.</p>
+
+        <p>Thank you,<br>
+        The Namma Bank Team</p>
+    </div>
+
+</body>
+</html>
