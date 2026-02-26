@@ -54,7 +54,7 @@ public class Credit extends HttpServlet {
 		if(from_id!=to_id) {
 			userDAO.debit(from_id, amount);
 			userDAO.credit(to_id, amount);
-			transactionDAO.createTransaction(from_id,to_id, amount, "debit");
+			transactionDAO.createTransaction(from_id,to_id, amount, "credit");
 		}
 		else{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
