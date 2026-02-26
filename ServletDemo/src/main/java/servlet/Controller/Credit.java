@@ -1,5 +1,4 @@
 package servlet.Controller;
-
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -62,6 +61,7 @@ public class Credit extends HttpServlet {
 		else{
 			userDAO.credit(to_id, amount);
 			userDAO.debit(from_id, amount);
+			transactionDAO.createTransaction(from_id,to_id, amount, "debit");
 		}
 		response.setStatus(200);
 		response.getWriter().println("{\"status\":\"success\"" + ",\"amount\":\"" + amount + " credited\"}");
