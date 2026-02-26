@@ -6,12 +6,28 @@ import servlet.util.PasswordUtil;
 import servlet.util.SecurityUtil;
 
 import java.sql.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class UserDAO{
+	private static final Logger logger =LoggerFactory.getLogger(UserDAO.class);
+	private Connection con;
+	public UserDAO() {
+        try{
+        	this.con = DBConnection.getConnection();
+        }
+        catch(SQLException e) {
+        	
+        	logger.error("database connection error", e);
+        }
+    }
+    public UserDAO(Connection con) {
+        this.con = con;
+    }
 	
 public void registerUser(String username, String email, String password,String role) throws Exception {
 	String sql="Insert into users(username,email,password,role) values(?,?,?,?);";
-	try(Connection con=DBConnection.getConnection();
-	PreparedStatement ps=con.prepareStatement(sql);){
+	try(PreparedStatement ps=con.prepareStatement(sql);){
 	ps.setString(1,username);
 	email=SecurityUtil.encrypt(email);
 	ps.setString(2,email);
@@ -27,8 +43,7 @@ public void registerUser(String username, String email, String password,String r
 
 public User login(String username,String pass){
 	String sql="select id,role,password from users where username=? ";
-	try (Connection con= DBConnection.getConnection();
-		PreparedStatement ps=con.prepareStatement(sql)){
+	try (PreparedStatement ps=con.prepareStatement(sql)){
 		ps.setString(1,username);
 		ResultSet rs=ps.executeQuery();
 		User user=new User();
@@ -49,8 +64,7 @@ public User login(String username,String pass){
 
 public double  balanceCheck(int id){
 	String sql="select balance from users where id=? ";
-	try (Connection con = DBConnection.getConnection();
-		PreparedStatement ps=con.prepareStatement(sql);)
+	try (PreparedStatement ps=con.prepareStatement(sql);)
 	{
 		ps.setInt(1,id);
 		ResultSet rs=ps.executeQuery();
@@ -66,11 +80,10 @@ public double  balanceCheck(int id){
 
 public void credit(int id, double amount) {
 	String sql="UPDATE users SET balance = balance + ? WHERE id = ?;";
-	try(Connection con= DBConnection.getConnection();
-		PreparedStatement ps=con.prepareStatement(sql);)
+	try(PreparedStatement ps=con.prepareStatement(sql);)
 	{
 		ps.setDouble(1, amount);
-		ps.setDouble(2,id);
+		ps.setInt(2,id);
 		ps.executeUpdate();
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -80,11 +93,10 @@ public void credit(int id, double amount) {
 
 public void debit(int id, double amount) {
 	String sql="UPDATE users SET balance = balance - ? WHERE id = ?;";
-	try (Connection con= DBConnection.getConnection();
-		PreparedStatement ps=con.prepareStatement(sql);)
+	try (PreparedStatement ps=con.prepareStatement(sql);)
 		{
 		ps.setDouble(1, amount);
-		ps.setDouble(2,id);
+		ps.setInt(2,id);
 		ps.executeUpdate();
 		ps.close();
 		con.close();
