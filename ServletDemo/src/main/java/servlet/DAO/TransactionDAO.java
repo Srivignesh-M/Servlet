@@ -21,8 +21,6 @@ public class TransactionDAO {
 		ps.setDouble(3,amount);
 		ps.setString(4,type);
 		ps.executeUpdate();
-		ps.close();
-		con.close();
 		}
 		catch(SQLException e) {
 			System.err.println("SQL Error :"+e.getMessage());
