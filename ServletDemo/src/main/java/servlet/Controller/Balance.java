@@ -18,12 +18,12 @@ import org.slf4j.LoggerFactory;
 public class Balance extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
-	UserDAO userDAO;
+	private final transient UserDAO userDAO;
 	public Balance(){
-		this.userDAO=new UserDAO();
+		userDAO=new UserDAO();
 	}
-	Balance(UserDAO userDAO){
-		this.userDAO=userDAO;
+	Balance(UserDAO userDAOargument){
+		userDAO=userDAOargument;
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

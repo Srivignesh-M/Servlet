@@ -5,10 +5,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import servlet.DAO.AdminDAO;
 import servlet.DAO.UserDAO;
 import servlet.Models.User;
-import servlet.util.PasswordUtil;
 
 import java.io.IOException;
 
@@ -19,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(Login.class);
-	private UserDAO userDAO;
+	private final transient UserDAO userDAO;
 	public Login() {
 		userDAO=new UserDAO();
 	}

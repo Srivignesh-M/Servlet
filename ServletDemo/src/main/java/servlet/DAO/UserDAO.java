@@ -36,7 +36,7 @@ public void registerUser(String username, String email, String password,String r
 	ps.executeUpdate();
 	}
 	catch(Exception e) {
-		e.printStackTrace();
+		logger.error("Inserting sql query failed to execute fro registration ",e);
 		throw e;
 	}
 }
@@ -57,7 +57,7 @@ public User login(String username,String pass){
 		}
 		}
 	} catch (Exception e) {
-		e.printStackTrace();
+		logger.error("sql query failed to execute for fetching user data",e);
 	}	
 	return null;
 }
@@ -72,7 +72,7 @@ public double  balanceCheck(int id){
 		double balance=rs.getDouble("balance");
 		return balance;
 	} catch (Exception e) {
-		e.printStackTrace();
+		logger.error("sql query failed to execute for balance ",e);
 	}
 	return -1.0;
 	
@@ -86,7 +86,7 @@ public void credit(int id, double amount) {
 		ps.setInt(2,id);
 		ps.executeUpdate();
 	} catch (Exception e) {
-		e.printStackTrace();
+		logger.error("updating sql query failed to execute in user table for credit",e);
 	}
 	
 }
@@ -101,7 +101,7 @@ public void debit(int id, double amount) {
 		ps.close();
 		con.close();
 	} catch (Exception e) {
-		e.printStackTrace();
+		logger.error("updating  sql query failed to execute in user table for debit ",e);
 	}
 }
 }
