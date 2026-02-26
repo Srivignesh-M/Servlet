@@ -51,7 +51,6 @@ public class Credit extends HttpServlet {
 			logger.info(from_id + " try to credit more amount than in their account");
 			return;
 		}
-		transactionDAO.createTransaction(from_id,to_id,amount,"credit");
 		if(from_id==to_id) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cant send amount to yourself\"}");
@@ -59,8 +58,9 @@ public class Credit extends HttpServlet {
 			return;
 		}
 		else{
-			userDAO.credit(to_id, amount);
 			userDAO.debit(from_id, amount);
+			userDAO.credit(to_id, amount);
+			
 			transactionDAO.createTransaction(from_id,to_id, amount, "debit");
 		}
 		response.setStatus(200);
