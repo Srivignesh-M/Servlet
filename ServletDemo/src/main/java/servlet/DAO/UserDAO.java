@@ -70,6 +70,7 @@ public double  balanceCheck(int id){
 		ResultSet rs=ps.executeQuery();
 		rs.next();
 		double balance=rs.getDouble("balance");
+		if (rs != null) rs.close();
 		return balance;
 	} catch (Exception e) {
 		logger.error("sql query failed to execute for balance ",e);
