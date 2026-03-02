@@ -34,10 +34,11 @@ public class TransactionDAO {
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		try {
 			con = DBConnection.getConnection();
-			String sql = "SELECT * FROM transactions WHERE from_user_id = ? ORDER BY t_date DESC, t_time DESC  limit 10 offset ?";
+			String sql = "SELECT * FROM transactions WHERE from_user_id = ? OR to_user_id=?  ORDER BY t_date DESC, t_time DESC  limit 10 offset ?";
 			PreparedStatement ps=con.prepareStatement(sql);
 			ps.setInt(1, id);
-			ps.setInt(2, page*10);
+			ps.setInt(2, id);
+			ps.setInt(3, page*10);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				Transaction transaction = new Transaction();
