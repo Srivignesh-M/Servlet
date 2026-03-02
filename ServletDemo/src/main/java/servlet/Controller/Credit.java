@@ -48,7 +48,7 @@ public class Credit extends HttpServlet {
 		if(amount>balance) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"invalid amount\"}");
-			logger.info(from_id + " try to credit more amount than in their account"+amount);
+			logger.info(from_id + " try to credit more amount than in their account"+ amount +" "+balance);
 			return;
 		}
 		if(from_id!=to_id) {
