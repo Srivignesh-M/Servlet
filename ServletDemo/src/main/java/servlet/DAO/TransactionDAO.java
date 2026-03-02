@@ -34,7 +34,7 @@ public class TransactionDAO {
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		try {
 			con = DBConnection.getConnection();
-			String sql = "SELECT * FROM transactions WHERE from_user_id = ? ORDER BY t_date DESC, t_time DESC  limit 10 offset ?";
+			String sql = "SELECT * FROM transactions WHERE to_user_id = ? ORDER BY t_date DESC, t_time DESC  limit 10 offset ?";
 			PreparedStatement ps=con.prepareStatement(sql);
 			ps.setInt(1, id);
 			ps.setInt(2, page*10);
