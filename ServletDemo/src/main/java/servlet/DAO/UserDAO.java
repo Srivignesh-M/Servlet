@@ -99,8 +99,6 @@ public void debit(int id, double amount) {
 		ps.setDouble(1, amount);
 		ps.setInt(2,id);
 		ps.executeUpdate();
-		ps.close();
-		con.close();
 	} catch (Exception e) {
 		logger.error("updating  sql query failed to execute in user table for debit ",e);
 	}
