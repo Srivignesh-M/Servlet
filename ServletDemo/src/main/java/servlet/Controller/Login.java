@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import servlet.DAO.UserDAO;
 import servlet.Models.User;
+import servlet.util.JwtUtil;
 
 import java.io.IOException;
 
@@ -37,10 +38,11 @@ public class Login extends HttpServlet {
        if(user!=null) {
     	   session.setAttribute("id",user.getId());
     	   session.setAttribute("role", user.getRole());
-    	   session.setMaxInactiveInterval(5*60);
+    	   session.setMaxInactiveInterval(3600000);
+    	   String token=JwtUtil.generateToken(username);
     	   response.setStatus(HttpServletResponse.SC_OK);
     	   response.getWriter().println("{\"status\":\"success\""
-					+ ",\"message\":\"user Login Successfull\"}");
+					+ ",\"message\":\"Bearer"+token+"\"}");
     	   logger.info(username + " logged in");
        }			
        else {
