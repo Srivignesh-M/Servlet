@@ -42,7 +42,7 @@ public class Login extends HttpServlet {
     	   String token=JwtUtil.generateToken(username);
     	   response.setStatus(HttpServletResponse.SC_OK);
     	   response.getWriter().println("{\"status\":\"success\""
-					+ ",\"message\":\"Bearer"+token+"\"}");
+					+ ",\"message\":\"Bearer "+token+"\"}");
     	   logger.info(username + " logged in");
        }			
        else {

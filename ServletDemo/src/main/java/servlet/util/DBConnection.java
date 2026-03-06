@@ -14,33 +14,30 @@ import com.zaxxer.hikari.HikariDataSource;
 public class DBConnection {
 	private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
 	private static HikariDataSource dataSource;
-	 private static String URL;
-	    private static String USER;
-	    private static String PASS;
+	 private static String url;
+	    private static String user;
+	    private static String pass;
 	static {
         try (InputStream input = DBConnection.class.getClassLoader()
                 .getResourceAsStream("application.properties")) {
             Properties prop = new Properties();         
             prop.load(input);
-            URL = prop.getProperty("URL");
-            USER = prop.getProperty("USER");
-            PASS = prop.getProperty("PASS"); 
+            url = prop.getProperty("URL");
+            user = prop.getProperty("USER");
+            pass = prop.getProperty("PASS"); 
             logger.info("properties loaded");
         } catch (Exception e) {
         	logger.error("Failed to load properties", e.getMessage(), e);
         }
 HikariConfig config = new HikariConfig();     
-        config.setJdbcUrl(URL);
-        config.setUsername(USER);
-        config.setPassword(PASS);
+        config.setJdbcUrl(url);
+        config.setUsername(user);
+        config.setPassword(pass);
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setMaximumPoolSize(10);
-        config.setMinimumIdle(5);
-        config.setIdleTimeout(300000);
-        config.setConnectionTimeout(20000);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setMinimumIdle(10);
+        config.setIdleTimeout(1000*60*60);
+        config.setConnectionTimeout(1000*20);
         dataSource = new HikariDataSource(config);
     }
     public static Connection getConnection() throws SQLException {
