@@ -49,7 +49,6 @@ class UserDAOTest {
         when(resultSet.getString("role")).thenReturn("USER");
         when(resultSet.getString("password")).thenReturn(hashedPass);
         User user = userDAO.login("test@mail.com", "plain_pass");
-
         assertNotNull(user);
         assertEquals(1, user.getId());
         assertEquals("USER", user.getRole());
@@ -60,9 +59,7 @@ class UserDAOTest {
     void testLoginUserNotFound() throws SQLException {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(false);
-
         User user = userDAO.login("wrong@mail.com", "any");
-
         assertNull(user);
     }
 
@@ -72,12 +69,10 @@ class UserDAOTest {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
         when(resultSet.getDouble("balance")).thenReturn(2500.75);
-
         double balance = userDAO.balanceCheck(101);
         assertEquals(2500.75,balance);
         
     }
-
     @Test
     @DisplayName("Balance - Failure: Should return -1.0 on SQL error")
     void testBalanceCheck_Failure() throws SQLException {
@@ -93,7 +88,6 @@ class UserDAOTest {
         verify(preparedStatement, times(1)).setDouble(1, 500.0);
         verify(preparedStatement, times(1)).executeUpdate();
     }
-
     @Test
     @DisplayName("Credit - Failure: Should handle SQLException internally")
     void testCredit_Failure() throws SQLException {
@@ -101,24 +95,19 @@ class UserDAOTest {
         assertDoesNotThrow(() -> userDAO.credit(101, 500.0));
         verify(preparedStatement).executeUpdate();
     }
-
     @Test
     @DisplayName("Debit - Success: Should verify parameters are set correctly")
     void testDebit_Success() throws SQLException {
         when(preparedStatement.executeUpdate()).thenReturn(1);
-
         assertDoesNotThrow(() -> userDAO.debit(101, 200.0));
         verify(preparedStatement).setDouble(1, 200.0);
         verify(preparedStatement).setInt(2, 101);
-        verify(preparedStatement).executeUpdate();
-        
+        verify(preparedStatement).executeUpdate(); 
     }
-
     @Test
     @DisplayName("Debit - Failure: Should complete even if DB fails")
     void testDebit_Failure() throws SQLException {
         doThrow(new SQLException()).when(preparedStatement).executeUpdate();
-
         assertDoesNotThrow(() -> userDAO.debit(101, 200.0));
     }
     

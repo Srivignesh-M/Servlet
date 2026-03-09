@@ -5,13 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import servlet.Models.Transaction;
 import servlet.util.DBConnection;
 
 public class TransactionDAO {
-
+	private static final Logger logger = LoggerFactory.getLogger(TransactionDAO.class);
 	public void createTransaction(int from_id, int to_id, double amount,String type) {
 		String sql="Insert into transactions(from_user_id,to_user_id,amount,transaction_type) values(?,?,?,?);";
 		try(Connection con=DBConnection.getConnection();
@@ -23,19 +25,18 @@ public class TransactionDAO {
 		ps.executeUpdate();
 		}
 		catch(SQLException e) {
-			System.err.println("SQL Error :"+e.getMessage());
+			logger.error(e.getMessage());
 		}
 		catch(Exception e) {
-			System.err.println("General Error :"+e.getMessage());
+			logger.error(e.getMessage());
 		}	
 	}
 	public ArrayList<Transaction> getTransactions(int id,int page){
-		Connection con;
 		ArrayList<Transaction> transactions = new ArrayList<>();
-		try {
-			con = DBConnection.getConnection();
-			String sql = "SELECT * FROM transactions WHERE from_user_id = ? OR to_user_id=?  ORDER BY t_date DESC, t_time DESC  limit 10 offset ?";
-			PreparedStatement ps=con.prepareStatement(sql);
+		String sql = "SELECT * FROM transactions WHERE from_user_id = ? OR to_user_id=?  ORDER BY t_date DESC, t_time DESC  limit 10 offset ?";
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement ps=con.prepareStatement(sql);){
+			
 			ps.setInt(1, id);
 			ps.setInt(2, id);
 			ps.setInt(3, page*10);

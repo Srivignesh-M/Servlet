@@ -1,12 +1,10 @@
 package servlet.util;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Properties;
-
 public class SecurityUtil {
 
     private static String SECRET_KEY;
