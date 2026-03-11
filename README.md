@@ -58,16 +58,16 @@ erDiagram
 ```
 
 ##  API Endpoints Summary
-**Sample API Endpoint :** http://localhost:8080/ServletDemo/register.
+**Endpoint URL:**[ PostMan Api Endpoints](https://ffvikky2004-3812105.postman.co/workspace/Sri-Vignesh's-Workspace~9f8bc020-1c7b-44fd-86d5-faec2738b0e1/collection/47588572-83801793-7cc1-4f05-b9b2-e86f41063391?action=share&source=copy-link&creator=47588572).
 | S.No | Endpoint | Method | Inputs Needed | Description |
 | :--- | :--- | :---: | :--- | :--- |
-| 1 | `/register` | `POST` | `UserName`, `email`, `password` | Registers a new user and creates unique id for them. |
+| 1 | `/register` | `POST` | `UserName`, `email`, `password`,`role` | Registers a new user and creates unique id for them.(role only needed for admin)|
 | 2 | `/login` | `POST` | `username`, `password` | Authenticates a user and creates a secure session. |
 | 3 | `/user/debit` | `POST` | `amount` | Debits the money after checking withdrawer balance. |
 | 4 | `/user/credit` | `POST` | `Receiver_ID`, `amount` |Credits the money after checking sender balance. |
 | 5 | `/user/balance` | `GET` | `null` | Retrieves balance Amount. |
 | 6 | `/user/statement` | `GET` | `accountID` | Gives the List of Transactions Made. |
-| 6 | `/admin/users` | `GET` | `null` | Gives the List of users. |
+| 6 | `/admin/users` | `GET` | `null` | Gives the List of users(Admin). |
 
 ---
 
