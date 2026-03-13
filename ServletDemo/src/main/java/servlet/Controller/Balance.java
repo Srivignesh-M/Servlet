@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 @WebServlet("/user/balance")
 public class Balance extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Balance.class);
 	private final transient UserDAO userDAO;
 	public Balance(){
 		userDAO=new UserDAO();
@@ -25,6 +25,7 @@ public class Balance extends HttpServlet {
 	Balance(UserDAO userDAOargument){
 		userDAO=userDAOargument;
 	}
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
@@ -33,6 +34,6 @@ public class Balance extends HttpServlet {
 		double balance = userDAO.balanceCheck(id);
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().println("{\"status\":\"success\"" + ",\"balance\":\"" + balance + "\"}");
-		logger.info(id+" fetched their balance");
+		LOGGER.info(id+" fetched their balance");
 	}
 }

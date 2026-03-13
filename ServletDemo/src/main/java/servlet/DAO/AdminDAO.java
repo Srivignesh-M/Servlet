@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 public class AdminDAO{
-	private static final Logger logger = LoggerFactory.getLogger(AdminDAO.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdminDAO.class);
 	public  ArrayList<User> getUsers() {
 		ArrayList<User> users = new ArrayList<>();
 		String sql="select id,username,email,balance from users";
@@ -27,7 +27,7 @@ public class AdminDAO{
 			}
 			return users;
 		} catch (Exception e) {
-			logger.error("Users fetching failed "+e.getMessage()+" "+e);
+			LOGGER.error("Users fetching failed "+e.getMessage()+" "+e);
 		}
 		return users;
 }

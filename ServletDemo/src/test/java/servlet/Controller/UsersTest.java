@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import servlet.Controller.Users;
 import servlet.DAO.AdminDAO;
 import servlet.Models.User;
+import servlet.controller.Users;
 
 public class UsersTest {
 	private Users users;

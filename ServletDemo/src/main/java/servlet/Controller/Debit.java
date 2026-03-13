@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import servlet.util.RegexUtil;
 @WebServlet("/user/debit")
 public class Debit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(Debit.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Debit.class);
 	private UserDAO userDAO;
 	private TransactionDAO transactionDAO;
 	private RegexUtil regexUtil;
@@ -33,7 +33,7 @@ public class Debit extends HttpServlet {
 		this.transactionDAO = transactionDAO;
 		this.regexUtil = regexUtil;
 	}
-
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession(false);
 		response.setContentType("application/json");
@@ -44,21 +44,21 @@ public class Debit extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\""
 					+ ",\"message\":\"amount does not contain leading zerosand must contain only two decimals\"}");
-			logger.info(id + " try to debit invalid amount format");
+			LOGGER.info(id + " try to debit invalid amount format");
 			return;
 		}
 		double balance = userDAO.balanceCheck(id);
 		if (amount > balance) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"invalid amount\"}");
-			logger.info(id + " try to debit more amount than in their account");
+			LOGGER.info(id + " try to debit more amount than in their account");
 			return;
 		}
 		userDAO.debit(id, amount);
 		transactionDAO.createTransaction(id, id, amount, "debit");
 		response.setStatus(200);
 		response.getWriter().println("{\"status\":\"success\"" + ",\"amount\":\"" + amount + " debited\"}");
-		logger.info(id + " debited " + amount + "rs from their account");
+		LOGGER.info(id + " debited " + amount + "rs from their account");
 
 	}
 }

@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import servlet.Controller.Register;
 import servlet.DAO.UserDAO;
+import servlet.controller.Register;
 import servlet.util.EmailSender;
 import servlet.util.RegexUtil;
 

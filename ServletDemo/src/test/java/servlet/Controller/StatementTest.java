@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -16,9 +16,9 @@ import org.junit.jupiter.api.Test;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import servlet.Controller.Statement;
 import servlet.DAO.TransactionDAO;
 import servlet.Models.Transaction;
+import servlet.controller.Statement;
 
 public class StatementTest {
 	private Statement statement;

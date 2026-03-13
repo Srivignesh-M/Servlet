@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -14,9 +14,9 @@ import org.junit.jupiter.api.Test;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import servlet.Controller.Debit;
 import servlet.DAO.TransactionDAO;
 import servlet.DAO.UserDAO;
+import servlet.controller.Debit;
 import servlet.util.RegexUtil;
 
 public class DebitTest {

@@ -9,7 +9,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.slf4j.Logger;
 
 public class EmailSender {
-		private static final Logger logger=LoggerFactory.getLogger(EmailSender.class);
+		private static final Logger LOGGER=LoggerFactory.getLogger(EmailSender.class);
 		private final TemplateEngine templateEngine;
 		public EmailSender() {
 	        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
@@ -46,9 +46,9 @@ public class EmailSender {
 	            String htmlContent = templateEngine.process("email-template", context);
 	            message.setContent(htmlContent, "text/html; charset=utf-8");
 	            Transport.send(message);
-	            logger.info("Email sent successfully");
+	            LOGGER.info("Email sent successfully");
 	        } catch (MessagingException e) {
-	            logger.info("Email sending Failed "+e.getMessage()+e);
+	            LOGGER.info("Email sending Failed "+e.getMessage()+e);
 	        }
 	    }
 	}

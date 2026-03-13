@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 @WebServlet("/login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(Login.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Login.class);
 	private final transient UserDAO userDAO;
 	public Login() {
 		userDAO=new UserDAO();
@@ -25,6 +25,7 @@ public class Login extends HttpServlet {
 	public Login(UserDAO userDAO) {
 		this.userDAO=userDAO;
 	}
+	@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     	
@@ -43,13 +44,13 @@ public class Login extends HttpServlet {
     	   response.setStatus(HttpServletResponse.SC_OK);
     	   response.getWriter().println("{\"status\":\"success\""
 					+ ",\"message\":\"Bearer "+token+"\"}");
-    	   logger.info(username + " logged in");
+    	   LOGGER.info(username + " logged in");
        }			
        else {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			response.getWriter().println("{\"status\":\"failed\""
 					+ ",\"message\":\"no user found\"}");  
-			logger.error(username + " logged in failed");
+			LOGGER.error(username + " logged in failed");
        }
     }
 }

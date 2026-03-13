@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 @WebServlet("/admin/users")
 public class Users extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(Users.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Users.class);
 	AdminDAO adminDAO;
 	public Users() {
 		adminDAO=new AdminDAO();
@@ -28,7 +28,7 @@ public class Users extends HttpServlet {
 	public Users(AdminDAO adminDAO) {
 		this.adminDAO=adminDAO;
 	}
-	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -37,6 +37,6 @@ public class Users extends HttpServlet {
 		Gson gson = new Gson();
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().println(gson.toJson(users).toString());
-		logger.info("Admin viewed the Users");
+		LOGGER.info("Admin viewed the Users");
 	}
 }

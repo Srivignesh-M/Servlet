@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UserDAO{
-	private static final Logger logger =LoggerFactory.getLogger(UserDAO.class);
+	private static final Logger LOGGER =LoggerFactory.getLogger(UserDAO.class);
 	private Connection con;
 	public UserDAO() {
         try{
@@ -18,7 +18,7 @@ public class UserDAO{
         }
         catch(SQLException e) {
         	
-        	logger.error("database connection error", e);
+        	LOGGER.error("database connection error", e);
         }
     }
     public UserDAO(Connection con) {
@@ -36,7 +36,7 @@ public void registerUser(String username, String email, String password,String r
 	ps.executeUpdate();
 	}
 	catch(Exception e) {
-		logger.error("Inserting sql query failed to execute fro registration ",e);
+		LOGGER.error("Inserting sql query failed to execute fro registration ",e);
 		throw e;
 	}
 }
@@ -57,7 +57,7 @@ public User login(String username,String pass){
 		}
 		}
 	} catch (Exception e) {
-		logger.error("sql query failed to execute for fetching user data",e);
+		LOGGER.error("sql query failed to execute for fetching user data",e);
 	}	
 	return null;
 }
@@ -73,7 +73,7 @@ public double  balanceCheck(int id){
 		if (rs != null) rs.close();
 		return balance;
 	} catch (Exception e) {
-		logger.error("sql query failed to execute for balance ",e);
+		LOGGER.error("sql query failed to execute for balance ",e);
 	}
 	return -1.0;
 	
@@ -87,7 +87,7 @@ public void credit(int id, double amount) {
 		ps.setInt(2,id);
 		ps.executeUpdate();
 	} catch (Exception e) {
-		logger.error("updating sql query failed to execute in user table for credit",e);
+		LOGGER.error("updating sql query failed to execute in user table for credit",e);
 	}
 	
 }
@@ -100,7 +100,7 @@ public void debit(int id, double amount) {
 		ps.setInt(2,id);
 		ps.executeUpdate();
 	} catch (Exception e) {
-		logger.error("updating  sql query failed to execute in user table for debit ",e);
+		LOGGER.error("updating  sql query failed to execute in user table for debit ",e);
 	}
 }
 }

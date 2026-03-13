@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,11 +18,8 @@ import servlet.Models.Transaction;
 @WebServlet("/user/statement")
 
 public class Statement extends HttpServlet {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(Statement.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Statement.class);
 	private TransactionDAO transactionDAO;
 	public Statement(){
 		this.transactionDAO=new TransactionDAO();
@@ -30,6 +27,7 @@ public class Statement extends HttpServlet {
 	public Statement(TransactionDAO transactionDAO){
 		this.transactionDAO=transactionDAO;
 	}
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session=request.getSession(false);
@@ -45,7 +43,7 @@ public class Statement extends HttpServlet {
 					"message":"not valid page"
 					}
 					""");
-			logger.info(id + " entered a invalid page number");
+			LOGGER.info(id + " entered a invalid page number");
 			return;
 		}
 		else {
@@ -60,7 +58,7 @@ public class Statement extends HttpServlet {
 					"message":"no transactions made"
 					}
 					""");
-			logger.info(id + "viewed their Statement but no transactions made by them.");
+			LOGGER.info(id + "viewed their Statement but no transactions made by them.");
 			return;
 		}
 		Gson gson = new Gson();
@@ -71,7 +69,7 @@ public class Statement extends HttpServlet {
 				"message":"these are the transactions"
 				}
 				""");
-		logger.info(id + "viewed their Statement.");
+		LOGGER.info(id + "viewed their Statement.");
 		response.getWriter().println(gson.toJson(transactions).toString());
 	}
 }

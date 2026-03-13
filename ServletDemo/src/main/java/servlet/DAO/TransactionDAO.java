@@ -13,7 +13,7 @@ import servlet.Models.Transaction;
 import servlet.util.DBConnection;
 
 public class TransactionDAO {
-	private static final Logger logger = LoggerFactory.getLogger(TransactionDAO.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionDAO.class);
 	public void createTransaction(int from_id, int to_id, double amount,String type) {
 		String sql="Insert into transactions(from_user_id,to_user_id,amount,transaction_type) values(?,?,?,?);";
 		try(Connection con=DBConnection.getConnection();
@@ -25,10 +25,10 @@ public class TransactionDAO {
 		ps.executeUpdate();
 		}
 		catch(SQLException e) {
-			logger.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 		catch(Exception e) {
-			logger.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}	
 	}
 	public ArrayList<Transaction> getTransactions(int id,int page){

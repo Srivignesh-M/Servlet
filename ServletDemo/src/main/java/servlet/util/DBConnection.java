@@ -10,7 +10,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class DBConnection {
-	private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DBConnection.class);
 	private static HikariDataSource dataSource;
 	 private static String url;
 	    private static String user;
@@ -23,9 +23,9 @@ public class DBConnection {
             url = prop.getProperty("URL");
             user = prop.getProperty("USER");
             pass = prop.getProperty("PASS"); 
-            logger.info("properties loaded");
+            LOGGER.info("properties loaded");
         } catch (Exception e) {
-        	logger.error("Failed to load properties", e.getMessage(), e);
+        	LOGGER.error("Failed to load properties", e.getMessage(), e);
         }
 HikariConfig config = new HikariConfig();     
         config.setJdbcUrl(url);
@@ -43,9 +43,9 @@ HikariConfig config = new HikariConfig();
     }
     public static void shutdown() {
         if (dataSource != null && !dataSource.isClosed()) {
-            logger.info("Closing HikariCP");
+            LOGGER.info("Closing HikariCP");
             dataSource.close();
-            logger.info("HikariCP DataSource closed successfully.");
+            LOGGER.info("HikariCP DataSource closed successfully.");
         }
     }
 }

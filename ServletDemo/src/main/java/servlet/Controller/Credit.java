@@ -1,4 +1,4 @@
-package servlet.Controller;
+package servlet.controller;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import servlet.util.RegexUtil;
 @WebServlet("/user/credit")
 public class Credit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(Credit.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Credit.class);
 	private UserDAO userDAO;
 	private TransactionDAO transactionDAO;
 	private RegexUtil regexUtil;
@@ -31,6 +31,7 @@ public class Credit extends HttpServlet {
         this.transactionDAO=transactionDAO;
         this.regexUtil=regexUtil;
     }
+    @Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession(false);
 		int from_id=(int)(session.getAttribute("id"));
@@ -41,14 +42,14 @@ public class Credit extends HttpServlet {
 		if(!regexUtil.isValidAmount(amountString)) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"amount does not contain leading zerosand must contain only two decimals\"}");
-			logger.info(from_id+" try to Credit invalid amount format");
+			LOGGER.info(from_id+" try to Credit invalid amount format");
 			return;
 		}
 		double balance=userDAO.balanceCheck(from_id);
 		if(amount>balance) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"invalid amount\"}");
-			logger.info(from_id + " try to credit more amount than in their account"+ amount +" "+balance);
+			LOGGER.info(from_id + " try to credit more amount than in their account"+ amount +" "+balance);
 			return;
 		}
 		if(from_id!=to_id) {
@@ -59,11 +60,11 @@ public class Credit extends HttpServlet {
 		else{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("{\"status\":\"failed\"" + ",\"message\":\"cant send amount to yourself\"}");
-			logger.info(from_id+" try to send amount to their own account");
+			LOGGER.info(from_id+" try to send amount to their own account");
 			return;
 		}
 		response.setStatus(200);
 		response.getWriter().println("{\"status\":\"success\"" + ",\"amount\":\"" + amount + " credited\"}");
-		logger.info(from_id+" credited "+amount+" Rs. to "+to_id);
+		LOGGER.info(from_id+" credited "+amount+" Rs. to "+to_id);
 	}
 }
